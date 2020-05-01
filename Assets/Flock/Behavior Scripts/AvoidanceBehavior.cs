@@ -17,10 +17,12 @@ public class AvoidanceBehavior : FilteredFlockBehavior
         List<Transform> filteredContext = (filter == null) ? context : filter.Filter(agent, context);
         foreach (Transform item in filteredContext)
         {
-            if (Vector2.SqrMagnitude(item.position - agent.transform.position) < flock.SquareAvoidanceRadius)
+            if (item.GetComponent<Collider2D>() == null) continue;
+            ColliderDistance2D dist = agent.AgentCollider.Distance(item.GetComponent<Collider2D>());
+            if (dist.distance < flock.SquareAvoidanceRadius) 
             {
                 nAvoid++;
-                avoidanceMove += (Vector2)(agent.transform.position - item.position);
+                avoidanceMove += dist.normal * dist.distance;
             }
         }
         if (nAvoid > 0)

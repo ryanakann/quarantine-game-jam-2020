@@ -372,14 +372,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1356403808}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 22.525, y: 21, z: 1}
+  m_LocalPosition: {x: 4.487, y: 0.737, z: 0}
+  m_LocalScale: {x: 78.612816, y: 30.208448, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &1356403811
-CircleCollider2D:
+--- !u!61 &1356403811
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -392,8 +392,18 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0.049999997, y: 0.049999997, z: 0.049999997, w: 0.049999997}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.16, y: 0.16}
+    newSize: {x: 0.16, y: 0.16}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   serializedVersion: 2
-  m_Radius: 0.08
+  m_Size: {x: 0.16, y: 0.16}
+  m_EdgeRadius: 0
 --- !u!1 &1445657152
 GameObject:
   m_ObjectHideFlags: 0
@@ -430,7 +440,7 @@ MonoBehaviour:
   driveFactor: 10
   maxSpeed: 5
   neighborRadius: 1.5
-  avoidanceRadiusMultiplier: 1
+  avoidanceRadiusMultiplier: 0.5
 --- !u!4 &1445657154
 Transform:
   m_ObjectHideFlags: 0
@@ -481,7 +491,7 @@ MonoBehaviour:
   driveFactor: 10
   maxSpeed: 5
   neighborRadius: 1.5
-  avoidanceRadiusMultiplier: 1
+  avoidanceRadiusMultiplier: 0.5
 --- !u!4 &1777480182
 Transform:
   m_ObjectHideFlags: 0
