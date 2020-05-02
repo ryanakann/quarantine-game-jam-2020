@@ -102,6 +102,9 @@ public class SpiderIKTarget : MonoBehaviour {
             yield return new WaitForEndOfFrame();
         }
         transform.position = target;
+        if (Physics.CheckSphere(target, 1f, groundMask)) {
+            FX_Spawner.instance.SpawnFX(FXType.FOOTSTEP, transform.position, Vector3.zero);
+        }
         updatingTarget = false;
     }
 

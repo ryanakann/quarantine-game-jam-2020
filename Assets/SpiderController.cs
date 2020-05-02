@@ -32,7 +32,7 @@ public class SpiderController : MonoBehaviour {
 
     [Header("Debug")]
     public Vector3 velocity;
-    public Vector3 gravity;
+    public Vector3 gravVelocity;
     public float x;
     public float y;
 
@@ -80,16 +80,19 @@ public class SpiderController : MonoBehaviour {
         //Average sphere of raycasts to determine up direction
         up = Vector3.zero;
         int hitCount = 0;
-        distance = 0f;
-        for (int x = 0; x < steps / 2; x++) {
-            direction = zRotation * direction;
-            for (int y = 0; y < steps; y++) {
-                direction = xRotation * direction;
-                Debug.DrawRay(transform.position, direction * groundedColliderRadius, Color.yellow);
 
-                if (Physics.Raycast(transform.position, direction, out hit, groundedColliderRadius, groundLayer)) {
-                    up += hit.normal / hit.distance;
-                    hitCount++;
+        if (!jumping) {
+            distance = 0f;
+            for (int x = 0; x < steps / 2; x++) {
+                direction = zRotation * direction;
+                for (int y = 0; y < steps; y++) {
+                    direction = xRotation * direction;
+                    Debug.DrawRay(transform.position, direction * groundedColliderRadius, Color.yellow);
+
+                    if (Physics.Raycast(transform.position, direction, out hit, groundedColliderRadius, groundLayer)) {
+                        up += hit.normal / hit.distance;
+                        hitCount++;
+                    }
                 }
             }
         }
@@ -98,8 +101,13 @@ public class SpiderController : MonoBehaviour {
         }
 
         up.Normalize();
-        x = Input.GetAxisRaw("Horizontal") * rotSpeed;
-        y = Input.GetAxis("Vertical") * speed;
+
+        if (grounded || airControl) {
+            x = Input.GetAxisRaw("Horizontal") * rotSpeed;
+            y = Input.GetAxis("Vertical") * speed;
+        } else {
+            y = 0f; //Reset rotation prevent endless air spinning
+        }
         right = Quaternion.Euler(up * x * (100f / snappiness) * Time.deltaTime) * transform.right;
         forward = Vector3.Cross(right, up);
 
@@ -111,36 +119,54 @@ public class SpiderController : MonoBehaviour {
         velocity = forward * y;
 
         //Jump handling
-        if (!grounded) {
-            if (rb.velocity.y > 0f) {
-                gravity = Physics.gravity * 2f;
+        if (!jumping) {
+            if (!grounded) {
+                if (rb.velocity.y < 0f) {
+                    gravVelocity += Physics.gravity * 3f * Time.deltaTime;
+                } else {
+                    if (Input.GetButton("Jump")) {
+                        gravVelocity += Physics.gravity * Time.deltaTime;
+                    } else {
+                        gravVelocity += Physics.gravity * 4f * Time.deltaTime;
+                    }
+                }
+
+                if (Physics.CheckBox(transform.position + col.center, col.bounds.extents, transform.rotation, groundLayer)) {
+                    grounded = true;
+                }
             } else {
-                gravity = Physics.gravity;
-            }
+                gravVelocity = Vector3.zero;
 
-            if (Physics.CheckBox(transform.position+col.center, col.bounds.extents, transform.rotation, groundLayer)) {
-                grounded = true;
-            }
-        } else {
-            gravity = Vector3.zero;
-
-            if (Input.GetButtonDown("Jump")) {
-                grounded = false;
-                velocity += Vector3.up * jumpForce;
+                if (Input.GetButtonDown("Jump") && !jumping) {
+                    Jump();
+                }
             }
         }
-        velocity += gravity;
 
+        //Apply velocity
+        velocity += gravVelocity;
         rb.velocity = velocity;
 
         //Prevent spider from floating away from ground
-        if (Physics.Raycast(rb.position, -up, out hit, groundedColliderRadius, groundLayer)) {
+        if (!jumping && Physics.Raycast(rb.position, -up, out hit, groundedColliderRadius, groundLayer)) {
             distance = hit.distance;
             if (distance > targetDistanceFromSurface) {
                 Vector3 target = rb.position - up * (distance - targetDistanceFromSurface);
                 rb.position = Vector3.SmoothDamp(rb.position, target, ref posVelRef, 2f);
             }
         }
+    }
+
+    private void Jump () {
+        grounded = false;
+        gravVelocity = transform.up * jumpForce;
+        StartCoroutine(JumpBuffer());
+    }
+
+    IEnumerator JumpBuffer () {
+        jumping = true;
+        yield return new WaitForSeconds(0.1f);
+        jumping = false;
     }
 
     void OnDrawGizmos () {
