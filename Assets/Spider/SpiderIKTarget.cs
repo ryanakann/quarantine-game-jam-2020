@@ -75,9 +75,9 @@ public class SpiderIKTarget : MonoBehaviour {
         signedDistance = Mathf.Sign(Vector3.Dot(transform.forward, neutralTarget-legPosition)) * (neutralTarget - legPosition).magnitude;
         if (updatingTarget) return;
 
-        if (signedDistance > maxDistance) {
+        if (signedDistance > maxDistance + 0.01f) {
             StartCoroutine(UpdateTarget(forwardTarget));    
-        } else if (signedDistance < -maxDistance) {
+        } else if (signedDistance < -maxDistance - 0.01f) {
             StartCoroutine(UpdateTarget(backwardTarget));
         }
     }
