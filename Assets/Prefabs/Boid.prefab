@@ -122,6 +122,7 @@ GameObject:
   - component: {fileID: 6349151928875962174}
   - component: {fileID: 2931604500597588581}
   - component: {fileID: 7028407786795359931}
+  - component: {fileID: 8604344912794524013}
   m_Layer: 8
   m_Name: Boid
   m_TagString: Untagged
@@ -185,6 +186,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8604344912794524013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4115476135907606149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b86991a0e12c4b845a820e93c47c8e35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds: []
+  soundTime: 10
 --- !u!1 &4129664613085831616
 GameObject:
   m_ObjectHideFlags: 0
