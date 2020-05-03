@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class BoidManager : MonoBehaviour {
 
 
     public int score;
+    [HideInInspector]
+    TextMeshPro text;
+
 
     const int threadGroupSize = 1024;
 
@@ -22,12 +26,15 @@ public class BoidManager : MonoBehaviour {
             b.DeathEvent += BoidGet;
         }
         score = 0;
+        text = transform.parent.FindDeepChild("Score").GetComponent<TextMeshPro>();
     }
 
     void BoidGet(Boid boid)
     {
         boids.Remove(boid);
         score++;
+        if (text)
+            text.text = $"Score:{score}";
     }
 
     void Update () {
