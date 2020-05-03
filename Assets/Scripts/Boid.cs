@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public delegate void GameEvent();
+public delegate void BoidEvent(Boid boid);
 
 public class Boid : MonoBehaviour {
 
@@ -26,7 +27,7 @@ public class Boid : MonoBehaviour {
     [HideInInspector]
     public int numPerceivedFlockmates;
 
-    public GameEvent DeathEvent;
+    public BoidEvent DeathEvent;
     public LayerMask mask;
 
     // Cached
@@ -63,7 +64,7 @@ public class Boid : MonoBehaviour {
 
         if (Physics.CheckSphere(position, settings.boundsRadius, mask))
         {
-            DeathEvent?.Invoke();
+            DeathEvent?.Invoke(this);
             return;
         }
 
