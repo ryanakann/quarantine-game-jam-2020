@@ -41,8 +41,10 @@ public class Web : MonoBehaviour {
 
     public void FinishWeb () {
         player.GetComponent<SpiderController>().currentWeb = null;
+        finished = true;
 
         //if (Physics.CheckSphere(player.position, 5f, player.GetComponent<SpiderController>().groundLayer)) RemoveWeb();
+        Instantiate(placementSound, player.position, Quaternion.identity);
 
         GetComponentInChildren<Collider>().enabled = true;
     }

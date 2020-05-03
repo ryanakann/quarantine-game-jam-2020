@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/WhiteCity/Scenes/Sample.unity
     guid: 1a4e37fe1d5bcef448eaacca8ef81fad
+  - enabled: 1
+    path: Assets/Scenes/End.unity
+    guid: d1875ddd2020e0d4485ddce383c25ad2
   m_configObjects: {}
