@@ -23,7 +23,7 @@ public class Web : MonoBehaviour {
         if (finished) return;
         currentArea = transform.localScale.magnitude;
         if (currentArea > maxArea) {
-            FinishWeb();
+            RemoveWeb();
         } else {
             Vector3 planarPosition = new Vector3(player.position.x, transform.position.y, player.position.z);
             float width = (player.position - transform.position).magnitude;
@@ -42,7 +42,7 @@ public class Web : MonoBehaviour {
     public void FinishWeb () {
         player.GetComponent<SpiderController>().currentWeb = null;
 
-        if (Physics.CheckSphere(player.position, 5f, player.GetComponent<SpiderController>().groundLayer)) RemoveWeb();
+        //if (Physics.CheckSphere(player.position, 5f, player.GetComponent<SpiderController>().groundLayer)) RemoveWeb();
 
         GetComponentInChildren<Collider>().enabled = true;
     }
