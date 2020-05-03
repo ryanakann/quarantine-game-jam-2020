@@ -51,5 +51,20 @@ namespace AmplifyShaderEditor
 		{
 			AmplifyShaderEditorWindow.CreateConfirmationTemplateShader( "003dfa9c16768d048b74f75c088119d8" );
 		}
+		[MenuItem( "Assets/Create/Amplify Shader/Deprecated/HD/Unlit", false, 85 )]
+		public static void ApplyTemplateDeprecatedHDUnlit()
+		{
+			AmplifyShaderEditorWindow.CreateConfirmationTemplateShader( "dfe2f27ac20b08c469b2f95c236be0c3" );
+		}
+		[MenuItem( "Assets/Create/Amplify Shader/Deprecated/HD/Lit", false, 85 )]
+		public static void ApplyTemplateDeprecatedHDLit()
+		{
+			AmplifyShaderEditorWindow.CreateConfirmationTemplateShader( "091c43ba8bd92c9459798d59b089ce4e" );
+		}
+		[MenuItem( "Assets/Create/Amplify Shader/Deprecated/HD/PBR", false, 85 )]
+		public static void ApplyTemplateDeprecatedHDPBR()
+		{
+			AmplifyShaderEditorWindow.CreateConfirmationTemplateShader( "bb308bce79762c34e823049efce65141" );
+		}
 	}
 }

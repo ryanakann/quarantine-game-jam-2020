@@ -490,13 +490,15 @@ MonoBehaviour:
   airControl: 1
   grounded: 0
   jumping: 0
-  groundedColliderRadius: 1.5
+  landingAdjustTime: 1
+  landingAdjustDamp: 3
+  groundedColliderRadius: 4
   airborneColliderRadius: 5
   targetDistanceFromSurface: 0.01
   groundLayer:
     serializedVersion: 2
     m_Bits: 512
-  raycastInverseResolution: 16
+  raycastInverseResolution: 32
   snappiness: 8
   velocity: {x: 0, y: 0, z: 0}
   gravVelocity: {x: 0, y: 0, z: 0}
@@ -533,7 +535,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 0.745595, z: 4.0293593}
-  m_Center: {x: 0, y: -0.12720262, z: -0.94053364}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8268822845708942863
 GameObject:
   m_ObjectHideFlags: 0
@@ -651,7 +653,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8268822845910869414}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.5, z: 0}
+  m_LocalPosition: {x: 0, y: 1.5, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8268822844643250164}
