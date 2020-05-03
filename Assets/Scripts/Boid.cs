@@ -38,6 +38,7 @@ public class Boid : MonoBehaviour {
         material = transform.GetComponentInChildren<MeshRenderer> ().material;
         cachedTransform = transform;
         mask = LayerMask.GetMask("Web");
+        GetComponent<Animator>().speed += Random.Range(0, 0.5f);
     }
 
     public void Initialize (BoidSettings settings, Transform target) {
