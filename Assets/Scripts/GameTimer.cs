@@ -10,7 +10,7 @@ public class GameTimer : MonoBehaviour
 
     [HideInInspector]
     public float time = 60f;
-    float max_time = 60f;
+    public float max_time = 60f;
     bool toot;
     public GameEvent TimerEnd;
 
@@ -24,6 +24,7 @@ public class GameTimer : MonoBehaviour
         if (null == instance)
         {
             instance = this;
+            time = max_time;
             timer_bar = transform.parent.FindDeepChild("TimerBar").GetComponent<Image>();
             original_width = timer_bar.rectTransform.localScale.x;
             DontDestroyOnLoad(gameObject);

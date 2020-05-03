@@ -76,7 +76,7 @@ public class SpiderController : MonoBehaviour {
         Move();
 
         if (currentWeb == null) {
-            if (Input.GetMouseButtonDown(0)) {
+            if (Input.GetMouseButtonDown(0) && grounded) {
                 currentWeb = Instantiate(webPrefab).GetComponent<Web>();
             }
         } else {
@@ -161,16 +161,16 @@ public class SpiderController : MonoBehaviour {
                 }
             }
         }
-
         
 
         //Prevent spider from floating away from ground
         if (!jumping && Physics.Raycast(rb.position, -up, out hit, groundedColliderRadius, groundLayer)) {
             distance = hit.distance;
             Vector3 target = rb.position - up * (distance - targetDistanceFromSurface);
-            velocity += target - rb.position;
+            //velocity += target - rb.position;
             //if (distance > targetDistanceFromSurface) {
-            //    rb.position = Vector3.SmoothDamp(rb.position, target, ref posVelRef, landingAdjustDamp);
+            //    print("Adjust!");
+                rb.position = Vector3.SmoothDamp(rb.position, target, ref posVelRef, landingAdjustDamp);
             //}
         }
 
