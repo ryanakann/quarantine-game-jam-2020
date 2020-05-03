@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class BoidManager : MonoBehaviour {
 
+
+    public int score;
+
     const int threadGroupSize = 1024;
 
     public BoidSettings settings;
@@ -16,8 +19,15 @@ public class BoidManager : MonoBehaviour {
         boids = new List<Boid>(FindObjectsOfType<Boid> ());
         foreach (Boid b in boids) {
             b.Initialize (settings, target);
+            b.DeathEvent += BoidGet;
         }
+        score = 0;
+    }
 
+    void BoidGet(Boid boid)
+    {
+        boids.Remove(boid);
+        score++;
     }
 
     void Update () {
@@ -61,6 +71,8 @@ public class BoidManager : MonoBehaviour {
             boidBuffer.Release ();
         }
     }
+
+
 
     public struct BoidData {
         public Vector3 position;
