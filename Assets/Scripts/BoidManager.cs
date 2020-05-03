@@ -6,9 +6,9 @@ using TMPro;
 public class BoidManager : MonoBehaviour {
 
 
-    public int score;
+    public static int score;
     [HideInInspector]
-    TextMeshPro text;
+    TextMeshProUGUI text;
 
 
     const int threadGroupSize = 1024;
@@ -26,7 +26,7 @@ public class BoidManager : MonoBehaviour {
             b.DeathEvent += BoidGet;
         }
         score = 0;
-        text = transform.parent.FindDeepChild("Score").GetComponent<TextMeshPro>();
+        text = transform.parent.FindDeepChild("Score").GetComponent<TextMeshProUGUI>();
     }
 
     void BoidGet(Boid boid)
