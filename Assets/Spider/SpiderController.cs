@@ -149,18 +149,21 @@ public class SpiderController : MonoBehaviour {
             }
         }
 
+        
+
+        //Prevent spider from floating away from ground
+        if (!jumping && Physics.Raycast(rb.position, -up, out hit, groundedColliderRadius, groundLayer)) {
+            distance = hit.distance;
+            Vector3 target = rb.position - up * (distance - targetDistanceFromSurface);
+            velocity += target - rb.position;
+            //if (distance > targetDistanceFromSurface) {
+            //    rb.position = Vector3.SmoothDamp(rb.position, target, ref posVelRef, landingAdjustDamp);
+            //}
+        }
+
         //Apply velocity
         velocity += gravVelocity;
         rb.velocity = velocity;
-
-        //Prevent spider from floating away from ground
-        if (!jumping && timeSinceLanded < landingAdjustTime && Physics.Raycast(rb.position, -up, out hit, groundedColliderRadius, groundLayer)) {
-            distance = hit.distance;
-            if (distance > targetDistanceFromSurface) {
-                Vector3 target = rb.position - up * (distance - targetDistanceFromSurface);
-                rb.position = Vector3.SmoothDamp(rb.position, target, ref posVelRef, landingAdjustDamp);
-            }
-        }
 
         if (grounded) {
             timeSinceLanded += Time.deltaTime;

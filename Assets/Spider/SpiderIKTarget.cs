@@ -75,9 +75,10 @@ public class SpiderIKTarget : MonoBehaviour {
         signedDistance = Mathf.Sign(Vector3.Dot(transform.forward, neutralTarget-legPosition)) * (neutralTarget - legPosition).magnitude;
         if (updatingTarget) return;
 
-        if (signedDistance > maxDistance + 0.01f) {
+        //If enough distance has been travelled, move leg
+        if (signedDistance > maxDistance + 0.1f) {
             StartCoroutine(UpdateTarget(forwardTarget));    
-        } else if (signedDistance < -maxDistance - 0.01f) {
+        } else if (signedDistance < -maxDistance - 0.1f) {
             StartCoroutine(UpdateTarget(backwardTarget));
         }
     }
@@ -85,13 +86,44 @@ public class SpiderIKTarget : MonoBehaviour {
     private IEnumerator UpdateTarget (Vector3 target) {
         updatingTarget = true;
 
-        int iteration = 0;
-        int maxIterations = 256;
 
-        while (Physics.OverlapSphere(transform.position, 1 / 16f, groundMask).Length > 0 && iteration++ < maxIterations) {
-            transform.position += spider.transform.up * Time.deltaTime;
+        //Find closest point to target if not already grounded
+        /*********************************************/
+        if (false == Physics.CheckSphere(target, 0.1f, groundMask)) {
+            float raycastInverseResolution = 32;
+            Vector3 direction = Vector3.right;
+            float radius = 5f;
+            RaycastHit hit;
+            List<Vector3> points = new List<Vector3>();
+            int steps = Mathf.FloorToInt(360f / raycastInverseResolution);
+            Quaternion xRotation = Quaternion.Euler(Vector3.right * raycastInverseResolution);
+            Quaternion yRotation = Quaternion.Euler(Vector3.up * raycastInverseResolution);
+            Quaternion zRotation = Quaternion.Euler(Vector3.forward * raycastInverseResolution);
+            for (int x = 0; x < steps / 2; x++) {
+                direction = zRotation * direction;
+                for (int y = 0; y < steps; y++) {
+                    direction = xRotation * direction;
+
+                    if (Physics.Raycast(target, direction, out hit, radius, groundMask)) {
+                        points.Add(hit.point);
+                    }
+                }
+            }
+            float minDist = float.PositiveInfinity;
+            Vector3 closestPoint = target;
+            foreach (var point in points) {
+                float dist = Vector3.Magnitude(point - target);
+                if (dist < minDist) {
+                    minDist = dist;
+                    closestPoint = point;
+                }
+            }
+            target = closestPoint;
         }
+        /*********************************************/
 
+
+        //Quickly lerp to target
         float t = 0f;
         Vector3 initialPos = transform.position;
         Quaternion initialRotation = transform.rotation;
@@ -102,7 +134,7 @@ public class SpiderIKTarget : MonoBehaviour {
             yield return new WaitForEndOfFrame();
         }
         transform.position = target;
-        if (Physics.CheckSphere(target, 1f, groundMask)) {
+        if (Physics.CheckSphere(target, 2f, groundMask)) {
             FX_Spawner.instance.SpawnFX(FXType.FOOTSTEP, transform.position, Vector3.zero);
         }
         updatingTarget = false;
