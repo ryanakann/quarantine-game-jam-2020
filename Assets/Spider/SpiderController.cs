@@ -20,7 +20,9 @@ public class SpiderController : MonoBehaviour {
     public float landingAdjustTime = 1f;
     public float landingAdjustDamp = 0.2f;
 
-    
+    [Header("Webs")]
+    public GameObject webPrefab;
+    public Web currentWeb;
 
     [Header("Snap to Ground Settings")]
     public float groundedColliderRadius = 5f;
@@ -62,6 +64,7 @@ public class SpiderController : MonoBehaviour {
     void Awake () {
         distance = 0f;
         timeSinceLanded = 9999f;
+        currentWeb = null;
 
         col = GetComponent<BoxCollider>();
 
