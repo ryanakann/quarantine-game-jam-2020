@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public delegate void GameEvent();
+
 public class Boid : MonoBehaviour {
 
     BoidSettings settings;
@@ -24,6 +26,9 @@ public class Boid : MonoBehaviour {
     [HideInInspector]
     public int numPerceivedFlockmates;
 
+    public GameEvent DeathEvent;
+    public LayerMask mask;
+
     // Cached
     Material material;
     Transform cachedTransform;
@@ -32,6 +37,7 @@ public class Boid : MonoBehaviour {
     void Awake () {
         material = transform.GetComponentInChildren<MeshRenderer> ().material;
         cachedTransform = transform;
+        mask = LayerMask.GetMask("Web");
     }
 
     public void Initialize (BoidSettings settings, Transform target) {
@@ -53,6 +59,12 @@ public class Boid : MonoBehaviour {
 
     public void UpdateBoid () {
         Vector3 acceleration = Vector3.zero;
+
+        if (Physics.CheckSphere(position, settings.boundsRadius, mask))
+        {
+            DeathEvent?.Invoke();
+            return;
+        }
 
         if (target != null) {
             Vector3 offsetToTarget = (target.position - position);
