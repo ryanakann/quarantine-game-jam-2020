@@ -14,7 +14,11 @@ public class SpiderController : MonoBehaviour {
     public float jumpForce;
     public bool airControl = false;
     public bool grounded;
+    private bool groundedLF;
     public bool jumping;
+    private float timeSinceLanded;
+    public float landingAdjustTime = 1f;
+    public float landingAdjustDamp = 0.2f;
 
     
 
@@ -57,6 +61,7 @@ public class SpiderController : MonoBehaviour {
 
     void Awake () {
         distance = 0f;
+        timeSinceLanded = 9999f;
 
         col = GetComponent<BoxCollider>();
 
@@ -65,13 +70,13 @@ public class SpiderController : MonoBehaviour {
     }
 
     private void Update () {
-        colliderRadius = groundedColliderRadius;
         Move();
-        print("Ang Vel: " + rb.angularVelocity);
     }
 
     private void Move () {
         Vector3 direction = Vector3.right;
+        colliderRadius = groundedColliderRadius;
+
         int steps = Mathf.FloorToInt(360f / raycastInverseResolution);
         //print("Steps: " + steps);
         Quaternion xRotation = Quaternion.Euler(Vector3.right * raycastInverseResolution);
@@ -148,14 +153,22 @@ public class SpiderController : MonoBehaviour {
         velocity += gravVelocity;
         rb.velocity = velocity;
 
-        ////Prevent spider from floating away from ground
-        //if (!jumping && Physics.Raycast(rb.position, -up, out hit, groundedColliderRadius, groundLayer)) {
-        //    distance = hit.distance;
-        //    if (distance > targetDistanceFromSurface) {
-        //        Vector3 target = rb.position - up * (distance - targetDistanceFromSurface);
-        //        rb.position = Vector3.SmoothDamp(rb.position, target, ref posVelRef, 2f);
-        //    }
-        //}
+        //Prevent spider from floating away from ground
+        if (!jumping && timeSinceLanded < landingAdjustTime && Physics.Raycast(rb.position, -up, out hit, groundedColliderRadius, groundLayer)) {
+            distance = hit.distance;
+            if (distance > targetDistanceFromSurface) {
+                Vector3 target = rb.position - up * (distance - targetDistanceFromSurface);
+                rb.position = Vector3.SmoothDamp(rb.position, target, ref posVelRef, landingAdjustDamp);
+            }
+        }
+
+        if (grounded) {
+            timeSinceLanded += Time.deltaTime;
+        } else {
+            timeSinceLanded = 0f;
+        }
+
+        groundedLF = grounded;
     }
 
     private void Jump () {
