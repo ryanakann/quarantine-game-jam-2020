@@ -8,7 +8,7 @@ public class BoidManager : MonoBehaviour {
 
     public static int score;
     [HideInInspector]
-    TextMeshPro text;
+    TextMeshProUGUI text;
 
 
     const int threadGroupSize = 1024;
