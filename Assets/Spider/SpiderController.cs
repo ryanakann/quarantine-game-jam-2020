@@ -74,6 +74,16 @@ public class SpiderController : MonoBehaviour {
 
     private void Update () {
         Move();
+
+        if (currentWeb == null) {
+            if (Input.GetMouseButtonDown(0)) {
+                currentWeb = Instantiate(webPrefab).GetComponent<Web>();
+            }
+        } else {
+            if (Input.GetMouseButtonDown(0)) {
+                currentWeb.GetComponent<Web>().FinishWeb();
+            }
+        }
     }
 
     private void Move () {

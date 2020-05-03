@@ -10,6 +10,10 @@ public class Web : MonoBehaviour {
 
     public Transform player;
 
+    public LayerMask groundMask;
+    public GameObject placementSound;
+    public GameObject destructionSound;
+
     private void Awake () {
         if (player == null) player = FindObjectOfType<SpiderController>().transform;
         StartWeb();
@@ -25,7 +29,7 @@ public class Web : MonoBehaviour {
             float width = (player.position - transform.position).magnitude;
             float height = Mathf.Sign(transform.position.y - player.position.y) * Mathf.Max(4f, Mathf.Abs(player.position.y - transform.position.y));
             transform.LookAt(player.position, Vector3.up);
-            transform.localScale = new Vector3(1f, width * 2f / 3f, width);
+            transform.localScale = new Vector3(width, width, width);
         }
     }
 
@@ -37,7 +41,14 @@ public class Web : MonoBehaviour {
 
     public void FinishWeb () {
         player.GetComponent<SpiderController>().currentWeb = null;
-        
+
+        if (Physics.CheckSphere(player.position, 5f, player.GetComponent<SpiderController>().groundLayer)) RemoveWeb();
+
         GetComponentInChildren<Collider>().enabled = true;
+    }
+
+    public void RemoveWeb () {
+        Instantiate(destructionSound, player.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 }
