@@ -86,7 +86,6 @@ public class SpiderIKTarget : MonoBehaviour {
     private IEnumerator UpdateTarget (Vector3 target) {
         updatingTarget = true;
 
-
         //Find closest point to target if not already grounded
         /*********************************************/
         if (false == Physics.CheckSphere(target, 0.1f, groundMask)) {
