@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SpiderController : MonoBehaviour {
@@ -66,6 +67,7 @@ public class SpiderController : MonoBehaviour {
     private void Update () {
         colliderRadius = groundedColliderRadius;
         Move();
+        print("Ang Vel: " + rb.angularVelocity);
     }
 
     private void Move () {
@@ -80,27 +82,26 @@ public class SpiderController : MonoBehaviour {
         //Average sphere of raycasts to determine up direction
         up = Vector3.zero;
         int hitCount = 0;
-
         if (!jumping) {
             distance = 0f;
             for (int x = 0; x < steps / 2; x++) {
                 direction = zRotation * direction;
                 for (int y = 0; y < steps; y++) {
                     direction = xRotation * direction;
-                    Debug.DrawRay(transform.position, direction * groundedColliderRadius, Color.yellow);
 
                     if (Physics.Raycast(transform.position, direction, out hit, groundedColliderRadius, groundLayer)) {
+                        Debug.DrawRay(transform.position, direction * hit.distance, Color.yellow);
                         up += hit.normal / hit.distance;
                         hitCount++;
                     }
                 }
             }
+            up.Normalize();
         }
         if (hitCount == 0) {
             up = Vector3.up;
         }
 
-        up.Normalize();
 
         if (grounded || airControl) {
             x = Input.GetAxisRaw("Horizontal") * rotSpeed;
@@ -147,14 +148,14 @@ public class SpiderController : MonoBehaviour {
         velocity += gravVelocity;
         rb.velocity = velocity;
 
-        //Prevent spider from floating away from ground
-        if (!jumping && Physics.Raycast(rb.position, -up, out hit, groundedColliderRadius, groundLayer)) {
-            distance = hit.distance;
-            if (distance > targetDistanceFromSurface) {
-                Vector3 target = rb.position - up * (distance - targetDistanceFromSurface);
-                rb.position = Vector3.SmoothDamp(rb.position, target, ref posVelRef, 2f);
-            }
-        }
+        ////Prevent spider from floating away from ground
+        //if (!jumping && Physics.Raycast(rb.position, -up, out hit, groundedColliderRadius, groundLayer)) {
+        //    distance = hit.distance;
+        //    if (distance > targetDistanceFromSurface) {
+        //        Vector3 target = rb.position - up * (distance - targetDistanceFromSurface);
+        //        rb.position = Vector3.SmoothDamp(rb.position, target, ref posVelRef, 2f);
+        //    }
+        //}
     }
 
     private void Jump () {
@@ -178,12 +179,16 @@ public class SpiderController : MonoBehaviour {
         Gizmos.color = Color.green;
         Gizmos.DrawRay(transform.position, up * 2 * groundedColliderRadius);
         Gizmos.DrawRay(transform.position, smoothUp * 2 * groundedColliderRadius);
+        Gizmos.DrawSphere(transform.position + up * 2 * groundedColliderRadius, 0.3f);
 
         Gizmos.color = Color.blue;
         Gizmos.DrawRay(transform.position, forward * 2 * groundedColliderRadius);
         Gizmos.DrawRay(transform.position, smoothForward * 2 * groundedColliderRadius);
+        Gizmos.DrawSphere(transform.position + forward * 2 * groundedColliderRadius, 0.3f);
 
         Gizmos.color = Color.red;
         Gizmos.DrawRay(transform.position, right * 2 * groundedColliderRadius);
+        Gizmos.DrawSphere(transform.position + right * 2 * groundedColliderRadius, 0.3f);
+
     }
 }
