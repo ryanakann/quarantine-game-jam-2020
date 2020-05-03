@@ -353,7 +353,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Thank you for playing! Now leave.
+  m_text: 'Thank you for playing! Now leave.
+
+
+    Escape to leave, R to restart.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: cb0b24f90c6c889498b77bcf42923ded, type: 2}
   m_sharedMaterial: {fileID: -7397245868475868867, guid: cb0b24f90c6c889498b77bcf42923ded,
@@ -423,12 +426,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1297917515}
-    characterCount: 33
+    characterCount: 65
     spriteCount: 0
-    spaceCount: 5
-    wordCount: 6
+    spaceCount: 12
+    wordCount: 12
     linkCount: 0
-    lineCount: 1
+    lineCount: 3
     pageCount: 1
     materialCount: 2
   m_isUsingLegacyAnimationComponent: 0
@@ -605,6 +608,7 @@ GameObject:
   - component: {fileID: 1755998756}
   - component: {fileID: 1755998755}
   - component: {fileID: 1755998754}
+  - component: {fileID: 1755998758}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -692,3 +696,15 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1755998758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1755998753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1885d2cee77b3b64baa320f3a226e433, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
