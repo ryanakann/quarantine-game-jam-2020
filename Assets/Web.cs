@@ -11,6 +11,7 @@ public class Web : MonoBehaviour {
     public Transform player;
 
     public LayerMask groundMask;
+    public GameObject startSound;
     public GameObject placementSound;
     public GameObject destructionSound;
 
@@ -36,7 +37,11 @@ public class Web : MonoBehaviour {
     public void StartWeb () {
         finished = false;
         transform.position = player.position;
-        GetComponentInChildren<Collider>().enabled = false;
+        Instantiate(startSound, player.position, Quaternion.identity);
+
+        foreach (var col in GetComponentsInChildren<Collider>()) {
+            col.enabled = false;
+        }
     }
 
     public void FinishWeb () {
@@ -46,7 +51,9 @@ public class Web : MonoBehaviour {
         //if (Physics.CheckSphere(player.position, 5f, player.GetComponent<SpiderController>().groundLayer)) RemoveWeb();
         Instantiate(placementSound, player.position, Quaternion.identity);
 
-        GetComponentInChildren<Collider>().enabled = true;
+        foreach (var col in GetComponentsInChildren<Collider>()) {
+            col.enabled = true;
+        }
     }
 
     public void RemoveWeb () {
