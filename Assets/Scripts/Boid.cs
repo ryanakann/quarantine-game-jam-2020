@@ -40,6 +40,15 @@ public class Boid : MonoBehaviour {
         cachedTransform = transform;
         mask = LayerMask.GetMask("Web");
         GetComponent<Animator>().speed += Random.Range(0, 0.5f);
+        StartCoroutine(Chirp());
+    }
+
+    IEnumerator Chirp () {
+        while (true) {
+            float waitTime = Random.Range(1f, 16f);
+            yield return new WaitForSeconds(waitTime);
+            FX_Spawner.instance.SpawnFX(FXType.BIRB, transform.position, Vector3.zero);
+        }
     }
 
     public void Initialize (BoidSettings settings, Transform target) {

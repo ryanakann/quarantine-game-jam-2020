@@ -7,7 +7,8 @@ public enum FXType
 {
     Default,
     PLATFORM_BREAK,
-    FOOTSTEP
+    FOOTSTEP,
+    BIRB,
 }
 
 public class FX_Spawner : MonoBehaviour

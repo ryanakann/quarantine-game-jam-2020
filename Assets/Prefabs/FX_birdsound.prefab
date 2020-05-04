@@ -88,7 +88,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -145,5 +145,15 @@ MonoBehaviour:
   vol: -1
   lifetime: 0
   mixerGroup: {fileID: 0}
-  clips: []
+  clips:
+  - {fileID: 8300000, guid: 600f41fd26df47344823419616c920c4, type: 3}
+  - {fileID: 8300000, guid: 239cffca283fbeb42918539162b970be, type: 3}
+  - {fileID: 8300000, guid: 6465c2461bf33dd4d835cf7f2f3aa20c, type: 3}
+  - {fileID: 8300000, guid: 2d15355eaf470ed48aec46c716aa9eef, type: 3}
+  - {fileID: 8300000, guid: b036bf08a9d3bdc4ca904b87d095886c, type: 3}
+  - {fileID: 8300000, guid: 46c3eee9525a3cb4a91492d0a32d2515, type: 3}
+  - {fileID: 8300000, guid: 9568723cac37beb4db4f3b8d9004c6f1, type: 3}
+  - {fileID: 8300000, guid: 655ec6e5f64e3c941a2dfac8c7b1e776, type: 3}
+  - {fileID: 8300000, guid: 0567000eaaf54434fa69c547f8213361, type: 3}
+  - {fileID: 8300000, guid: e30979835d2ada642a43c875f61a9655, type: 3}
   randomize: 1

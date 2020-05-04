@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SpiderController : MonoBehaviour {
     [Header("Movement")]
@@ -19,6 +20,13 @@ public class SpiderController : MonoBehaviour {
     private float timeSinceLanded;
     public float landingAdjustTime = 1f;
     public float landingAdjustDamp = 0.2f;
+    public float acceleration;
+    public float maxAcceleration;
+    public float accelerationThreshold = 1500;
+    public bool dead = false;
+    public TMPro.TMP_Text text;
+    public float lastGroundedHeight;
+    public float currentGroundedHeight;
 
     [Header("Webs")]
     public GameObject webPrefab;
@@ -39,6 +47,7 @@ public class SpiderController : MonoBehaviour {
 
     [Header("Debug")]
     public Vector3 velocity;
+    public Vector3 velLF;
     public Vector3 gravVelocity;
     public float x;
     public float y;
@@ -70,9 +79,21 @@ public class SpiderController : MonoBehaviour {
 
         rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
+
+        velLF = rb.velocity;
+        acceleration = 0f;
+        currentGroundedHeight = rb.position.y;
+        lastGroundedHeight = currentGroundedHeight;
     }
 
     private void Update () {
+        if (dead) {
+            if (Input.GetKeyDown(KeyCode.Escape)) {
+                SceneManager.LoadScene(0);
+            }
+            return;
+        }
+
         Move();
 
         if (currentWeb == null) {
@@ -84,6 +105,22 @@ public class SpiderController : MonoBehaviour {
                 currentWeb.GetComponent<Web>().FinishWeb();
             }
         }
+
+        acceleration = (velLF.y - rb.velocity.y) / Time.deltaTime;
+        if (grounded) currentGroundedHeight = rb.position.y;
+        if (lastGroundedHeight - currentGroundedHeight > 50f) {
+            dead = true;
+            text.alpha = 1f;
+            //text.material.color = new Color(text.material.color.r, text.material.color.g, text.material.color.b, 255f);
+            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePosition;
+        }
+
+        if (Mathf.Abs(acceleration) > Mathf.Abs(maxAcceleration)) {
+            maxAcceleration = acceleration;
+        }
+
+        velLF = rb.velocity;
+        lastGroundedHeight = currentGroundedHeight;
     }
 
     private void Move () {
@@ -142,6 +179,10 @@ public class SpiderController : MonoBehaviour {
             if (!grounded) {
                 if (rb.velocity.y < 0f) {
                     gravVelocity += Physics.gravity * 3f * Time.deltaTime;
+
+                    //if (Physics.CheckBox(transform.position + col.center, col.bounds.extents, transform.rotation, groundLayer)) {
+                    //    grounded = true;
+                    //}
                 } else {
                     if (Input.GetButton("Jump")) {
                         gravVelocity += Physics.gravity * Time.deltaTime;
@@ -150,9 +191,7 @@ public class SpiderController : MonoBehaviour {
                     }
                 }
 
-                if (Physics.CheckBox(transform.position + col.center, col.bounds.extents, transform.rotation, groundLayer)) {
-                    grounded = true;
-                }
+                
             } else {
                 gravVelocity = Vector3.zero;
 
@@ -161,7 +200,12 @@ public class SpiderController : MonoBehaviour {
                 }
             }
         }
-        
+
+        if (Physics.CheckBox(transform.position + col.center, col.bounds.extents, transform.rotation, groundLayer)) {
+            grounded = true;
+        } else {
+            grounded = false;
+        }
 
         //Prevent spider from floating away from ground
         if (!jumping && Physics.Raycast(rb.position, -up, out hit, groundedColliderRadius, groundLayer)) {
@@ -170,7 +214,7 @@ public class SpiderController : MonoBehaviour {
             //velocity += target - rb.position;
             //if (distance > targetDistanceFromSurface) {
             //    print("Adjust!");
-                rb.position = Vector3.SmoothDamp(rb.position, target, ref posVelRef, landingAdjustDamp);
+            rb.position = Vector3.SmoothDamp(rb.position, target, ref posVelRef, landingAdjustDamp);
             //}
         }
 
