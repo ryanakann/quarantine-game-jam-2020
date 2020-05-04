@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3887804398275701989}
   - component: {fileID: 3887804398275701990}
+  - component: {fileID: -6090267930400539391}
   m_Layer: 0
   m_Name: DestroyWeb
   m_TagString: Untagged
@@ -127,3 +128,15 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-6090267930400539391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3887804398275701991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46245e618a00f334c8cd583cb921f184, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

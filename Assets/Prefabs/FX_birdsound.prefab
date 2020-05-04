@@ -140,7 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98ed42e9c0717b84fa6ce524da30a9c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pitch_range: 0.2
+  pitch_range: 0
   amp_range: 0.02
   vol: -1
   lifetime: 0
